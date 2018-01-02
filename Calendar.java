@@ -17,13 +17,9 @@ public class Calendar {
     }
     return maxDays[month - 1];
   }
-  void printCalendar(int year, int month, String firstDay){
+  void printCalendar(int year, int month){
     int maxDays = maxDaysOfMonth(year, month);
-    int first = parseFirstDayToInt(firstDay);
-    if(first == -1){
-      System.out.println("첫째날을 잘못 입력하셨습니다.");
-      return;
-    }
+    int first = getFirstDayOfMonth();
     System.out.printf("        <<%4d년 %3d월>>\n", year, month);
     System.out.println("  일  월  화  수  목  금  토");
     System.out.println("============================");
@@ -41,8 +37,9 @@ public class Calendar {
     System.out.println("");
   }
 
-  public int parseFirstDayToInt(String firstDay){
+  public int getFirstDayOfMonth(){
     int i = 0;
+    /*
     switch (firstDay){
       case "월": i = 1;
                  break;
@@ -61,6 +58,7 @@ public class Calendar {
       default: i = -1;
                 break;
     }
+    */
     return i;
   }
 
@@ -68,17 +66,18 @@ public class Calendar {
     Scanner scanner = new Scanner(System.in);
     Calendar calendar = new Calendar();
     int month = -1;
-    String firstDay = "";
+    int year = 0;
     while(true){
-      System.out.println("달을 입력하세요. (종료: -1)");
+      System.out.println("년도와 달을 입력하세요. (종료: -1)");
+      System.out.print("년도>");
+      if((year = scanner.nextInt()) == -1)
+        break;
       System.out.print("달>");
       if((month = scanner.nextInt()) == -1)
         break;
       if(month > 12)
         continue;
-      System.out.print("첫째 날의 요일을 입렵하세요.(월, 화, 수, 목, 금, 토 ,일)>");
-      firstDay = scanner.next();
-      calendar.printCalendar(2017, month, firstDay);
+      calendar.printCalendar(year, month);
     }
     System.out.printf("종료합니다.\n");
     scanner.close();

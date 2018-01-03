@@ -2,73 +2,46 @@ import java.util.Scanner;
 
 public class Calendar {
 
-  private final int[] maxDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-  public boolean isLeapYear(int year){
-    if(year%4 == 0 && (year%100 != 0 || year%400 == 0)){
-      return true;
-    }
-    return false;
+  void printOption(){
+    System.out.println("==========");
+    System.out.println("| 1. 일정등록");
+    System.out.println("| 2. 일정검색");
+    System.out.println("| 3. 달력보기");
+    System.out.println("| h. 도움말");
+    System.out.println("| q. 종료");
+    System.out.println("==========");
   }
 
-  public int maxDaysOfMonth(int year, int month){
-    if(isLeapYear(year) && month == 2){
-      return 29;
-    }
-    return maxDays[month - 1];
-  }
-  void printCalendar(int year, int month){
-    int maxDays = maxDaysOfMonth(year, month);
-    int first = getFirstDayOfMonth(year, month);
-    System.out.printf("        <<%4d년 %3d월>>\n", year, month);
-    System.out.println("  일  월  화  수  목  금  토");
-    System.out.println("============================");
-    if(first != 7){
-      for(int i=0; i<first; i++){
-        System.out.print("    ");
-      }
-    }
-    for(int i=1; i<=maxDays; i++){
-      if((i%7) + first == 7)
-        System.out.printf("  %2d\n", i);
-      else
-        System.out.printf("  %2d", i);
-    }
-    System.out.println("");
-  }
-
-  public int getFirstDayOfMonth(int year, int month){
-    int baseYear = 1970;
-    int baseDay = 3;
-    int count = 0;
-    for(int i=baseYear; i<year; i++){
-      count += isLeapYear(i)? 366: 365;
-    }
-    for(int i=1; i<month; i++){
-      count += maxDaysOfMonth(year, i);
-    }
-    int day = (count+baseDay + 1) % 7;
-    if (day == 0)
-      return 7;
-    return day;
+  void registerEvent(Scanner s, Manager m){
+    System.out.println("[새 일정 등록]");
+    System.out.print("날짜 (yyyy-mm-dd)>");
+    String date = scanner.next();
+    System.out.print("일정>");
+    String event = scanner.next();
+    m.registerEvent(date, event);
   }
 
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
+    Manager manager = new Manager();
     Calendar calendar = new Calendar();
-    int month = -1;
-    int year = 0;
-    while(true){
-      System.out.println("년도와 달을 입력하세요. (종료: -1)");
-      System.out.print("년도>");
-      if((year = scanner.nextInt()) == -1)
-        break;
-      System.out.print("달>");
-      if((month = scanner.nextInt()) == -1)
-        break;
-      if(month > 12)
-        continue;
-      calendar.printCalendar(year, month);
+    String command;
+    boolean quit = false;
+    calendar.printOption();
+    while(!quit){
+      System.out.print("명령(1, 2, 3, h, q)>");
+      switch (command){
+        case "1": calendar.registerEvent(scanner, manager);
+                  break;
+        case "2": break;
+        case "3": break;
+        case "h": calendar.printOption();
+                  break;
+        case "q": quit = true;
+                  break;
+        default:  System.out.println("다시 입력해주세요.");
+                  break;
+      }
     }
     System.out.printf("종료합니다.\n");
     scanner.close();

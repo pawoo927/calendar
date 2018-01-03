@@ -52,6 +52,7 @@ public class Calendar {
         case "h": calendar.printOption();
                   break;
         case "q": quit = true;
+                  manager.writeFile();
                   break;
         default:  System.out.println("다시 입력해주세요.");
                   break;

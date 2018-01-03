@@ -2,13 +2,17 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.text.ParseException;
+import java.io.*;
+import java.util.Iterator;
 
 public class Manager{
   private final int[] maxDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
   private HashMap<Date, String> eventMap;
+  public final String fileName = "calendar.txt";
 
   public Manager(){
     eventMap = new HashMap<Date, String>();
+    readFile();
   }
   public boolean isLeapYear(int year){
     if(year%4 == 0 && (year%100 != 0 || year%400 == 0)){
@@ -78,6 +82,49 @@ public class Manager{
     catch (ParseException e){
       System.out.println("다시 입력해주세요.");
       return "-1";
+    }
+  }
+
+
+  void readFile(){
+    try{
+      BufferedReader reader = new BufferedReader(new FileReader(fileName));
+      String data = "";
+      while((data = reader.readLine()) != null){
+        String event[] = data.split("/");
+        registerEvent(event[0], event[1]);
+      }
+      reader.close();
+    }
+    catch (Exception e){
+      return;
+    }
+  }
+
+  void writeFile(){
+    File f = new File(fileName);
+    if(!f.exists()){
+      try{
+        f.createNewFile();
+      }
+      catch(Exception e){
+        System.out.println("파일 생성 실패.");
+        return;
+      }
+    }
+    try{
+      BufferedWriter writer = new BufferedWriter(new FileWriter(f, false));
+      Iterator iterator = eventMap.keySet().iterator();
+      SimpleDateFormat date = new SimpleDateFormat("yyyy-mm-dd");
+      while(iterator.hasNext()){
+        Date key = (Date)iterator.next();
+        writer.write(date.format(key) + "/" + eventMap.get(key) + "\r\n");
+      }
+      writer.close();
+    }
+    catch (Exception e){
+      System.out.println("파일 저장 실패.");
+      return;
     }
   }
 }

@@ -19,7 +19,7 @@ public class Calendar {
   }
   void printCalendar(int year, int month){
     int maxDays = maxDaysOfMonth(year, month);
-    int first = getFirstDayOfMonth();
+    int first = getFirstDayOfMonth(year, month);
     System.out.printf("        <<%4d년 %3d월>>\n", year, month);
     System.out.println("  일  월  화  수  목  금  토");
     System.out.println("============================");
@@ -37,29 +37,20 @@ public class Calendar {
     System.out.println("");
   }
 
-  public int getFirstDayOfMonth(){
-    int i = 0;
-    /*
-    switch (firstDay){
-      case "월": i = 1;
-                 break;
-      case "화": i = 2;
-                 break;
-      case "수": i = 3;
-                 break;
-      case "목": i = 4;
-                break;
-      case "금": i = 5;
-                break;
-      case "토": i = 6;
-                break;
-      case "일": i = 7;
-                break;
-      default: i = -1;
-                break;
+  public int getFirstDayOfMonth(int year, int month){
+    int baseYear = 1970;
+    int baseDay = 3;
+    int count = 0;
+    for(int i=baseYear; i<year; i++){
+      count += isLeapYear(i)? 366: 365;
     }
-    */
-    return i;
+    for(int i=1; i<month; i++){
+      count += maxDaysOfMonth(year, i);
+    }
+    int day = (count+baseDay + 1) % 7;
+    if (day == 0)
+      return 7;
+    return day;
   }
 
   public static void main(String[] args) {

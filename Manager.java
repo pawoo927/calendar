@@ -1,6 +1,7 @@
-import java.util.date;
+import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.text.ParseException;
 
 public class Manager{
   private final int[] maxDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -70,7 +71,13 @@ public class Manager{
   }
 
   public String searchEvent(String strDate){
-    Date date = new SimpleDateFormat("yyyy-mm-dd").parse(strDate);
-    return eventMap.get(date);
+    try{
+      Date date = new SimpleDateFormat("yyyy-mm-dd").parse(strDate);
+      return eventMap.get(date);
+    }
+    catch (ParseException e){
+      System.out.println("다시 입력해주세요.");
+      return "-1";
+    }
   }
 }

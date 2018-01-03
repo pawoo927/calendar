@@ -15,10 +15,22 @@ public class Calendar {
   void registerEvent(Scanner s, Manager m){
     System.out.println("[새 일정 등록]");
     System.out.print("날짜 (yyyy-mm-dd)>");
-    String date = scanner.next();
+    String date = s.next();
     System.out.print("일정>");
-    String event = scanner.next();
+    String event = s.next();
     m.registerEvent(date, event);
+  }
+
+  void searchEvent(Scanner s, Manager m){
+    System.out.println("[일정 검색]");
+    System.out.println("날짜 (yyyy-mm-dd)>");
+    String date = s.next();
+    String event = m.searchEvent(date);
+    switch(event){
+      case "-1": break;
+      default: System.out.println(event);
+               break;
+    }
   }
 
   public static void main(String[] args) {
@@ -30,10 +42,12 @@ public class Calendar {
     calendar.printOption();
     while(!quit){
       System.out.print("명령(1, 2, 3, h, q)>");
+      command = scanner.next();
       switch (command){
         case "1": calendar.registerEvent(scanner, manager);
                   break;
-        case "2": break;
+        case "2": calendar.searchEvent(scanner, manager);
+                  break;
         case "3": break;
         case "h": calendar.printOption();
                   break;

@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.text.ParseException;
 import java.io.*;
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class Manager{
+	
   private final int[] maxDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
   private HashMap<Date, String> eventMap;
   public final String fileName = "calendar.txt";
@@ -70,7 +72,7 @@ public class Manager{
     }
     catch (ParseException e){
       System.out.println("다시 입력해주세요.");
-      return;
+      return; 
     }
   }
 
@@ -84,8 +86,48 @@ public class Manager{
       return "-1";
     }
   }
+  
+  public static void scan(String[] strDate) {
+ 
 
-
+      
+      System.out.println("년도 입력 : ");
+      Scanner scanner = null;
+      int year = Integer.parseInt(scanner.nextLine());
+      System.out.println("월 입력 : ");
+      int month = Integer.parseInt(scanner.nextLine());        
+      int START_DAY_OF_WEEK = 0;
+      int END_DAY = 0;
+      
+      Calendar start = Calendar.getInstance();
+      Calendar end = Calendar.getInstance();
+      
+      start.set(year, month - 1, 1);
+      end.set(year, month, 1);
+      end.add(Calendar.DATE, -1);
+      
+      START_DAY_OF_WEEK = start.get(Calendar.DATE);
+      END_DAY = end.get(Calendar.DATE);
+      
+      System.out.println(year+"년 "+month+"월 달력\n"
+              + "일\t월\t화\t수\t목\t금\t토");
+      
+      for(int q = 1 ; q < START_DAY_OF_WEEK ; q++) {
+          System.out.print("\t");
+      }
+      
+      int cnt = START_DAY_OF_WEEK - 1;
+      for(int q = 1 ; q <= END_DAY ; q++) {
+          System.out.print(q+"\t");
+          cnt ++;
+          if(cnt == 7) {
+              cnt = 0;
+              System.out.println("\n");
+              
+          }
+      }
+  }
+  
   void readFile(){
     try{
       BufferedReader reader = new BufferedReader(new FileReader(fileName));
